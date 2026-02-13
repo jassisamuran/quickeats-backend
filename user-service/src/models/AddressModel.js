@@ -14,7 +14,7 @@ const AddressType = {
 };
 
 @Entity("addresses")
-export class Address {
+export default class Address {
   @PrimaryGeneratedColumn("uuid")
   id;
 
