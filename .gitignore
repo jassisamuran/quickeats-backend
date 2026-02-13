@@ -1,0 +1,146 @@
+# Node dependencies
+/node_modules/
+**/node_modules/
+
+# Build output
+/dist/
+/build/
+/**/dist/
+/**/build/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# TypeORM metadata & migration outputs (if generated)
+ormconfig*.js
+ormconfig*.json
+
+# Database files (local dev)
+*.sqlite
+*.db
+*.db-journal
+
+# Docker
+docker-compose.override.yml
+**/docker-compose.override.yml
+**/docker-compose.*.env
+
+# Docker volumes
+**/volume/
+**/volumes/
+docker/*.log
+
+# npm
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Redis
+dump.rdb
+*.rdb
+
+# Test coverage
+coverage/
+**/coverage/
+
+# Jest cache
+jest-cache/
+jest-results.json
+# Node dependencies
+/node_modules/
+**/node_modules/
+
+# Build output
+/dist/
+/build/
+/**/dist/
+/**/build/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# TypeORM metadata & migration outputs (if generated)
+ormconfig*.js
+ormconfig*.json
+
+# Database files (local dev)
+*.sqlite
+*.db
+*.db-journal
+
+# Docker
+docker-compose.override.yml
+**/docker-compose.override.yml
+**/docker-compose.*.env
+
+# Docker volumes
+**/volume/
+**/volumes/
+docker/*.log
+
+# npm
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Redis
+dump.rdb
+*.rdb
+
+# Test coverage
+coverage/
+**/coverage/
+
+# Jest cache
+jest-cache/
+jest-results.json
