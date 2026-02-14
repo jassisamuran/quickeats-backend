@@ -1,7 +1,7 @@
-import Redis from "io";
-import { logger } from "./src/utils/logger";
+import Redis from "ioredis";
+import { logger } from "../utils/logger.js";
 
-export class cacheService {
+class CacheService {
   redis;
 
   constructor() {
@@ -45,3 +45,5 @@ export class cacheService {
     await this.redis.del(`password:reset:${email}`);
   }
 }
+
+export const cacheService = new CacheService();

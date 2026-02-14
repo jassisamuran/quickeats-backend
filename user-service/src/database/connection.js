@@ -1,18 +1,16 @@
+import "dotenv/config";
 import { DataSource } from "typeorm";
-import Address from "../models/AddressModel";
-import User from "../models/Usermodal";
+import Address from "../models/AddressModel.js";
+import User from "../models/Usermodal.js";
 export const AppDataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL,
-  synchronize: process.env.NODE_ENV === "development",
-  logging: process.env.NODE_ENV == "development",
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USER,
+  password: String(process.env.DB_PASSWORD),
+  database: process.env.DB_NAME,
+  synchronize: true,
+  logging: false,
   entities: [User, Address],
-  migrations: ["src/database/migrations/*.js"],
-  subscribers: [],
-  extra: {
-    max: 20,
-    min: 5,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-  },
+  migrations: ["src/migrations/*.js"],
 });
