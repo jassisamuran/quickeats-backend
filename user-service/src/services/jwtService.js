@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from "../utils/ApiError";
-export class jwtService {
+import { ApiError } from "../utils/ApiError.js";
+class JwtService {
   accessTokenSecret;
   refreshTokenSecret;
   accessTokenExpiry;
@@ -43,3 +43,5 @@ export class jwtService {
     }
   }
 }
+
+export const jwtService = new JwtService();

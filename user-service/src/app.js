@@ -1,6 +1,11 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
+import compression from "compression";
+import cors from "cors";
+import express from "express";
+import helmet from "helmet";
+import { register } from "./utils/metrics.js";
+
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -26,6 +31,9 @@ app.get("/metrics", async (req, res) => {
   res.set("Content-Type", "metrics");
   res.end(await register.metrics());
 });
+
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
