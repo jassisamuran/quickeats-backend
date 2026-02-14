@@ -1,7 +1,7 @@
 import Redis from "io";
 import { logger } from "./src/utils/logger";
 
-export class CacheService {
+export class cacheService {
   redis;
 
   constructor() {

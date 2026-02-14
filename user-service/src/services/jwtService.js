@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError";
-export class JWTService {
+export class jwtService {
   accessTokenSecret;
   refreshTokenSecret;
   accessTokenExpiry;
