@@ -1,83 +1,99 @@
-const {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  BeforeInsert,
-  BeforeUpdate,
-} = require("typeorm");
-const bcrypt = require("bcryptjs");
-const UserRole = {
+import { EntitySchema } from "typeorm";
+
+export const UserRole = {
   CUSTOMER: "customer",
   RESTAURANT_OWNER: "restaurant_owner",
   DELIVERY_BOY: "delivery_boy",
   ADMIN: "admin",
 };
 
-Entity("users");
-class User {
-  @PrimaryGeneratedColumn("uuid")
-  id;
+const User = new EntitySchema({
+  name: "User",
+  tableName: "users",
 
-  @Column({ unique: true })
-  email;
+  columns: {
+    id: {
+      type: "uuid",
+      primary: true,
+      generated: "uuid",
+    },
 
-  @Column({ select: false })
-  password;
+    email: {
+      type: String,
+      unique: true,
+    },
 
-  @Column({ unique: true })
-  phone;
+    password: {
+      type: String,
+      select: false,
+    },
 
-  @Column({ type: "enum", enum: UserRole, default: UserRole.CUSTOMER })
-  role;
+    phone: {
+      type: String,
+      unique: true,
+    },
 
-  @Column({ default: true })
-  isActive;
+    role: {
+      type: "enum",
+      enum: UserRole,
+      default: UserRole.CUSTOMER,
+    },
 
-  @Column({ default: true })
-  isEmailVerified;
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
 
-  @Column({ default: false })
-  isPhoneVerified;
+    isEmailVerified: {
+      type: Boolean,
+      default: true,
+    },
 
-  @Column({ nullable: true })
-  profileImage;
+    isPhoneVerified: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Column({ type: "jsonb", nullable: true })
-  preferences;
+    profileImage: {
+      type: String,
+      nullable: true,
+    },
 
-  @Column({ nullable: true, select: false })
-  refreshToken;
-  kll;
-  @Column({ type: "timestamp", nullable: true })
-  lastLoginAt;
+    preferences: {
+      type: "json",
+      nullable: true,
+    },
 
-  @OneToMany(() => Address, (address) => address.user, { cascade: true })
-  address;
+    refreshToken: {
+      type: String,
+      nullable: true,
+      select: false,
+    },
 
-  @CreateDateColumn()
-  createdAt;
+    lastLoginAt: {
+      type: "timestamp",
+      nullable: true,
+    },
 
-  @UpdateDateColumn()
-  updatedAt;
+    createdAt: {
+      type: "timestamp",
+      createDate: true,
+    },
 
-  @BeforeInsert
-  @BeforeUpdate
-  async hashPassword() {
-    if (this.password && !this.password.startsWith("$2")) {
-      this.password = await bcrypt.hash(this.password, 12);
-    }
-  }
+    updatedAt: {
+      type: "timestamp",
+      updateDate: true,
+    },
+  },
 
-  async comparePassword(candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
-  }
+  relations: {
+    addresses: {
+      type: "one-to-many",
+      target: "Address",
+      inverseSide: "user",
+      cascade: true,
+    },
+  },
+});
 
-  toJSON() {
-    const { password, refreshToken, ...user } = this;
-    return user;
-  }
-}
 export default User;

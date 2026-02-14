@@ -1,62 +1,79 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from "typeorm";
+import { EntitySchema } from "typeorm";
 
-const AddressType = {
+export const AddressType = {
   HOME: "home",
   WORK: "work",
   OTHER: "other",
 };
 
-@Entity("addresses")
-export default class Address {
-  @PrimaryGeneratedColumn("uuid")
-  id;
+const Address = new EntitySchema({
+  name: "Address",
+  tableName: "addresses",
 
-  @Column("uuid")
-  userId;
+  columns: {
+    id: {
+      type: "uuid",
+      primary: true,
+      generated: "uuid",
+    },
 
-  @ManyToMany(() => User, user.addresses, { onDelete: "CASCADE" })
-  user;
+    userId: {
+      type: "uuid",
+    },
 
-  @Column({ type: "enum", enum: AddressType, default: AddressType.HOME })
-  type;
+    type: {
+      type: "enum",
+      enum: AddressType,
+      default: AddressType.HOME,
+    },
 
-  @Column
-  street;
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    pincode: { type: String },
+    country: { type: String },
 
-  @Column
-  city;
+    landmark: {
+      type: String,
+      nullable: true,
+    },
 
-  @Column
-  state;
+    latitude: {
+      type: "decimal",
+      precision: 10,
+      scale: 8,
+    },
 
-  @Column
-  pincode;
+    longitude: {
+      type: "decimal",
+      precision: 11,
+      scale: 8,
+    },
 
-  @Column
-  country;
+    isDefault: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Column({ nullable: true })
-  landmark;
+    createdAt: {
+      type: "timestamp",
+      createDate: true,
+    },
 
-  @Column({ type: "decimal", precision: 10, scale: 8 })
-  latitude;
+    updatedAt: {
+      type: "timestamp",
+      updateDate: true,
+    },
+  },
 
-  @Column({ type: "decimal", precision: 11, scale: 8 })
-  longitude;
+  relations: {
+    user: {
+      type: "many-to-one",
+      target: "User",
+      joinColumn: { name: "userId" },
+      onDelete: "CASCADE",
+    },
+  },
+});
 
-  @Column({ default: false })
-  isDefault;
-
-  @CreateDateColumn
-  CreateDateColumn;
-
-  @UpdateDateColumn()
-  updatedAt;
-}
+export default Address;
