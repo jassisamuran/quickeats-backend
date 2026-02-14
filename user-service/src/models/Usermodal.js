@@ -1,6 +1,6 @@
 import { EntitySchema } from "typeorm";
 
-export const UserRole = {
+const UserRole = {
   CUSTOMER: "customer",
   RESTAURANT_OWNER: "restaurant_owner",
   DELIVERY_BOY: "delivery_boy",
@@ -25,7 +25,6 @@ const User = new EntitySchema({
 
     password: {
       type: String,
-      select: false,
     },
 
     phone: {
@@ -67,7 +66,6 @@ const User = new EntitySchema({
     refreshToken: {
       type: String,
       nullable: true,
-      select: false,
     },
 
     lastLoginAt: {

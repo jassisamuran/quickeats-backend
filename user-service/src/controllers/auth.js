@@ -1,17 +1,21 @@
-import { AppDataSource } from "../database/connection";
-import { cacheService } from "../services/cacheService";
-import { jwtService } from "../services/jwtService";
-import { ApiError } from "../utils/ApiError";
-
+import bcrypt from "bcrypt";
+import { AppDataSource } from "../database/connection.js";
+import User from "../models/Usermodal.js";
+import { cacheService } from "../services/cacheService.js";
+import { jwtService } from "../services/jwtService.js";
+import { ApiError } from "../utils/ApiError.js";
+import { logger } from "../utils/logger.js";
 const userRepository = AppDataSource.getRepository(User);
 
 export class AuthController {
   async signup(req, res, next) {
+    console.log("req.body", req.body);
     try {
-      const { emai, passwrord, fullName, phone, role } = req.body;
+      const { email, password, fullName, phone, role } = req.body;
       const exitingUser = await userRepository.findOne({
         where: [{ email }, { phone }],
       });
+      console.log("req.body", req.body);
 
       if (exitingUser) {
         throw new ApiError(400, "User with this email or phone already exits");
@@ -32,14 +36,14 @@ export class AuthController {
           },
         },
       });
-
+      console.log("user is", user);
       await userRepository.save(user);
 
       const accessToken = jwtService.generateAccessToken(user.id, user.role);
       const refreshToken = jwtService.generateRefreshToken(user.id);
 
       user.refreshToken = refreshToken;
-      await userRepository.save(save);
+      await userRepository.save(user);
 
       await cacheService.setUserSession(user.id, {
         id: user.id,
@@ -63,35 +67,33 @@ export class AuthController {
           refreshToken,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   }
 
   async login(req, res, next) {
     try {
       const { email, password } = req.body;
+      console.log("re1", req.body);
 
       const user = await userRepository.findOne({
         where: { email },
-        select: [
-          "id",
-          "email",
-          "password",
-          "fullName",
-          "phone",
-          "role",
-          "isActive",
-        ],
+        select: ["id", "email", "password", "phone", "role", "isActive"],
       });
+      console.log("re2", req.body);
+
       if (!user) {
         throw new ApiError(401, "Invalid email or password");
       }
 
       if (!user.isActive) {
-        throw new ApiErrorl(403, "You account has been deactivated.");
+        throw new ApiError(403, "You account has been deactivated.");
       }
 
-      const isPasswordValid = await user.comparePassword(password);
-      if (!isPasswordValid) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (password !== user.password) {
         throw new ApiError(401, "Invalid email or password");
       }
 
@@ -125,7 +127,10 @@ export class AuthController {
           refreshToken,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log("login error", error);
+      next(error);
+    }
   }
 
   async refreshToken(req, res, next) {
@@ -159,6 +164,8 @@ export class AuthController {
         },
       });
     } catch (error) {
+      console.error("LOGIN ERROR:", error);
+
       next(error);
     }
   }
@@ -167,10 +174,14 @@ export class AuthController {
     try {
       const userId = req.user?.userId;
 
+      console.log("now", req.user);
       if (userId) {
+        console.log("now2");
         await userRepository.update(userId, { refreshToken: null });
+        console.log("now3");
 
-        await cacheService.deleteUsersession(userId);
+        await cacheService.deleteUserSession(userId);
+        console.log("now4");
 
         logger.info(`User logged out: ${userId}`);
 
@@ -179,7 +190,10 @@ export class AuthController {
           message: "Logout successful",
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+      next(error);
+    }
   }
 
   async forgetPassword(req, res, next) {
@@ -196,7 +210,7 @@ export class AuthController {
         });
       }
 
-      const resetToken = Math.floor(1000000 + Math.random * 9000000);
+      const resetToken = Math.floor(1000000 + Math.random() * 9000000);
 
       await cacheService.setPasswordResetToken(email, resetToken);
 
