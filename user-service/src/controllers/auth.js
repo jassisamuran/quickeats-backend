@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { AppDataSource } from "../database/connection.js";
 import User from "../models/Usermodal.js";
 import { cacheService } from "../services/cacheService.js";
@@ -9,13 +8,11 @@ const userRepository = AppDataSource.getRepository(User);
 
 export class AuthController {
   async signup(req, res, next) {
-    console.log("req.body", req.body);
     try {
       const { email, password, fullName, phone, role } = req.body;
       const exitingUser = await userRepository.findOne({
         where: [{ email }, { phone }],
       });
-      console.log("req.body", req.body);
 
       if (exitingUser) {
         throw new ApiError(400, "User with this email or phone already exits");
@@ -91,7 +88,7 @@ export class AuthController {
         throw new ApiError(403, "You account has been deactivated.");
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      // const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (password !== user.password) {
         throw new ApiError(401, "Invalid email or password");
