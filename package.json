@@ -12,6 +12,8 @@
   "dependencies": {
     "ioredis": "^5.9.3",
     "joi": "^18.0.2",
-    "typeorm": "^0.3.28"
+    "razorpay": "^2.9.6",
+    "typeorm": "^0.3.28",
+    "winston": "^3.19.0"
   }
 }
