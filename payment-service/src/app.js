@@ -2,6 +2,9 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 
+import paymentRoutes from "./routes/payment.js";
+import transactionRoutes from "./routes/transaction.js";
+import webhookRoutes from "./routes/weebHook.js";
 const app = express();
 
 app.use(helmet());
@@ -16,6 +19,10 @@ app.use(
 app.use("/api/webhooks", express.raw({ type: "application/json" }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+app.use("/api/payments", paymentRoutes);
+app.use("/api/webhooks", webhookRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
