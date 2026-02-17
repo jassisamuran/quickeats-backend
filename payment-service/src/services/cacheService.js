@@ -1,6 +1,5 @@
 import Redis from "ioredis";
-import { error } from "winston";
-import { logger } from "../utils/logger";
+import { logger } from "../utils/logger.js";
 
 export class CacheService {
   redis;
@@ -15,7 +14,7 @@ export class CacheService {
     this.redis.on("connect", () => {
       logger.info("Redis Connect");
     });
-    this.redis.on("error", (err) => {
+    this.redis.on("error", (error) => {
       logger.error("Redis error:", error);
     });
   }

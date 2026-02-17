@@ -1,13 +1,13 @@
-const { EntitySchema } = require("typeorm");
+import { EntitySchema } from "typeorm";
 
-const RefundStatus = {
+export const RefundStatus = {
   PENDING: "pending",
   PROCESSING: "processing",
   PROCESSED: "processed",
   FAILED: "failed",
 };
 
-const Refund = new EntitySchema({
+export const Refund = new EntitySchema({
   name: "Refund",
 
   tableName: "refunds",
@@ -88,8 +88,3 @@ const Refund = new EntitySchema({
     },
   },
 });
-
-module.exports = {
-  Refund,
-  RefundStatus,
-};

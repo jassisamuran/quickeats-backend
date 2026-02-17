@@ -1,6 +1,6 @@
-const { EntitySchema } = require("typeorm");
+import { EntitySchema } from "typeorm";
 
-const PaymentStatus = {
+export const PaymentStatus = {
   CREATED: "created",
   PENDING: "pending",
   AUTHORIZED: "authorized",
@@ -20,7 +20,7 @@ const PaymentMethod = {
   CASH_ON_DELIVERY: "cod",
 };
 
-const Payment = new EntitySchema({
+export const Payment = new EntitySchema({
   name: "Payment",
 
   tableName: "payments",
@@ -131,9 +131,4 @@ const Payment = new EntitySchema({
     },
   },
 });
-
-module.exports = {
-  Payment,
-  PaymentStatus,
-  PaymentMethod,
-};
+export { PaymentMethod };

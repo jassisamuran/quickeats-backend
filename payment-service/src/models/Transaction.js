@@ -1,6 +1,6 @@
-const { EntitySchema } = require("typeorm");
+import { EntitySchema } from "typeorm";
 
-const TransactionType = {
+export const TransactionType = {
   PAYMENT_CREATED: "payment_created",
   PAYMENT_AUTHORIZED: "payment_authorized",
   PAYMENT_CAPTURED: "payment_captured",
@@ -10,7 +10,7 @@ const TransactionType = {
   REFUND_FAILED: "refund_failed",
 };
 
-const Transaction = new EntitySchema({
+export const Transaction = new EntitySchema({
   name: "Transaction",
 
   tableName: "transactions",
@@ -75,8 +75,3 @@ const Transaction = new EntitySchema({
     },
   },
 });
-
-module.exports = {
-  Transaction,
-  TransactionType,
-};

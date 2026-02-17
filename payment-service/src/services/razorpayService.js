@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import ApiError from "../utils/ApiError.js";
-import { logger } from "../utils/logger";
-export class RazorPayService {
+import { logger } from "../utils/logger.js";
+export default class RazorPayService {
   razorpay;
 
   constructor() {
