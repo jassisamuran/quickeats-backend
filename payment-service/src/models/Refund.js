@@ -35,8 +35,8 @@ export const Refund = new EntitySchema({
     },
 
     status: {
-      type: "enum",
-      enum: Object.values(RefundStatus),
+      type: "varchar",
+      // varchar: Object.values(RefundStatus),
       default: RefundStatus.PENDING,
     },
 

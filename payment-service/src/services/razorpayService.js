@@ -6,7 +6,7 @@ export default class RazorPayService {
   razorpay;
 
   constructor() {
-    if (!process.env.RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
       logger.warn("Razorpay credentials not configured");
     }
     this.razorpay = new Razorpay({

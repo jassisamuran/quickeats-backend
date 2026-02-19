@@ -27,8 +27,8 @@ export const Transaction = new EntitySchema({
     },
 
     type: {
-      type: "enum",
-      enum: Object.values(TransactionType),
+      type: "varchar",
+      default: Object.values(TransactionType),
     },
 
     amount: {

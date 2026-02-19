@@ -52,14 +52,14 @@ export const Payment = new EntitySchema({
     },
 
     status: {
-      type: "enum",
-      enum: Object.values(PaymentStatus),
+      type: "varchar",
+      // enum: Object.values(PaymentStatus),
       default: PaymentStatus.CREATED,
     },
 
     paymentMethod: {
-      type: "enum",
-      enum: Object.values(PaymentMethod),
+      type: "varchar",
+      // enum: Object.values(PaymentMethod),
       nullable: true,
     },
 
