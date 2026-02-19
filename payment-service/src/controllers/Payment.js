@@ -75,7 +75,7 @@ export class PaymentController {
         data: {
           paymentId: payment.id,
           razorpayOrderId: razorpayOrder.razorpayOrderId,
-          amount: payment.currency,
+          amount: payment.amount,
           currency: payment.currency,
           expiresAt: payment.expiresAt,
           razorpayKeyId: process.env.RAZORPAY_KEY_ID,
@@ -160,14 +160,16 @@ export class PaymentController {
 
       await paymentRepository.save(payment);
 
-      (await transactionReposity.save(transactionReposity)).create({
-        paymentId: payment.id,
-        type: TransactionType.PAYMENT_CAPTURED,
-        amount: payment.amount,
-        currency: payment.currency,
-        razorpayId: razorpayPaymentId,
-        notes: "Payment captured successfully",
-      });
+      transactionReposity.save(
+        transactionReposity.create({
+          paymentId: payment.id,
+          type: TransactionType.PAYMENT_CAPTURED,
+          amount: payment.amount,
+          currency: payment.currency,
+          razorpayId: razorpayPaymentId,
+          notes: "Payment captured successfully",
+        }),
+      );
 
       await cacheService.cachePayment(payment.id, payment);
 
@@ -184,8 +186,6 @@ export class PaymentController {
         logger.error("Failed to notify order service:", error);
       }
 
-      logger.info("Failed to notify order service:", error);
-
       res.json({
         success: true,
         message: "Payment verified successfully",
@@ -199,6 +199,7 @@ export class PaymentController {
       });
     } catch (error) {
       next(error);
+      console.log("error", error);
     }
   }
 

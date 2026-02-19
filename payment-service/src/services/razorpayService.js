@@ -31,7 +31,7 @@ export default class RazorPayService {
       logger.info(`Razorpay order created: ${razopayOrder.id}`);
 
       return {
-        razopayOrderId: razopayOrder.id,
+        razorpayOrderId: razopayOrder.id,
         amount: razopayOrder.amount / 100,
         currency: razopayOrder.currency,
         receipt: razopayOrder.receipt,
@@ -53,7 +53,7 @@ export default class RazorPayService {
       const expectedSignature = crypto
         .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET || "")
         .update(body.toString())
-        .digest("hext");
+        .digest("hex");
       return expectedSignature == razorpaySignature;
     } catch (error) {
       logger.error("Signature verification failed:", error);
